@@ -48,6 +48,7 @@ public class LoginController {
             httpSession.setAttribute("user", user); //세션 생성
 
             return "redirect:/todos";
+
         } catch(Exception e) {
             model.addAttribute("error", "존재하지 않는 사용자입니다.");
 

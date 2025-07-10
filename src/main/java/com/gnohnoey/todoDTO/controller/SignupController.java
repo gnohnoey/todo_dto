@@ -27,7 +27,7 @@ public class SignupController {
 
     @PostMapping("/signup")
     public String doSignup( //signup 실행하기, 폼에다 값 전달
-                            @Valid @ModelAttribute SignupDto signupDTO, //@Valid가 있어야 유효한지 아닌지 확인할 수 있음
+                            @Valid @ModelAttribute SignupDto signupDto, //@Valid가 있어야 유효한지 아닌지 확인할 수 있음
                             BindingResult bindingResult, //두 signup이 실행됐을 때의 결과값이 담겨 있음 --> valid 검사 결과
                             Model model
             ) {
@@ -35,9 +35,14 @@ public class SignupController {
             return "signup";
         }
         //중복 가입 여부 - 여기서 조회해보고 에러 나면 db에 안 넣음
+        if (userRepository.findByUsername(signupDto.getUsername()) != null) {
+            model.addAttribute("error", "이미 사용 중인 아이디입니다");
+
+            return "signup";
+        }
         User user = User.builder()
-                .username(signupDTO.getUsername())
-                .password(signupDTO.getPassword())
+                .username(signupDto.getUsername())
+                .password(signupDto.getPassword())
                 .build();
         userRepository.save(user);
         return "redirect:/login?registerd";

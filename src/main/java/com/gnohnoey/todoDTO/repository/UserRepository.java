@@ -2,6 +2,7 @@ package com.gnohnoey.todoDTO.repository;
 
 import com.gnohnoey.todoDTO.model.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -28,7 +29,7 @@ public class UserRepository {
 
         try {
             return jdbcTemplate.queryForObject(sql, userRowMapper, username);
-        } catch (EmptyStackException e){
+        } catch (EmptyResultDataAccessException e){
             return null;
         }
     }
